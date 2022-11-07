@@ -1,9 +1,28 @@
+# tfflick
+
+## Description
+
+**tfflick** is a Powershell mudule that lets you flick between different versions of Terraform. **tfflick** downloads the specific version you require.
+Installation is quick and and you can start using Terraform straight away.
+
+**tfflick** Currently has been tested on Powershell version 5.1 and currently only downloads the Windows AMD64 versions of the Terraform executable
+
+## Installation
+
+### Using the installer
+
 Open Poweshell and navigate to this folder's location.
-Run ``.\install_tfflick.ps1``
+Run `.\install_tfflick.ps1`
 
-Currently only work for Windows Amd64
+* The installer will copy the module to the C:\\**home directory**\Documents\WindowsPowerShell\Modules directory
+* Create an entry in the User `PATH`
+* Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
 
 
-# Save this folder/file in one of the paths in $env:PSModulePath
-# example C:\Windows\System32\WindowsPowerShell\v1.0\Modules\tfflick\tfflick
-# Make sure you add C:\Users\<your.username>\tfflick to your PATH to be able to execute terraform --version and other options.
+### Manual installation
+
+* Copy the module to the C:\\**home directory**\Documents\WindowsPowerShell\Modules directory
+* Create an entry in the User `PATH`
+* Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
+
+
