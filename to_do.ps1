@@ -1,0 +1,1 @@
+Invoke-WebRequest "https://github.com/ggaacode/tfflick/blob/main/tfflick_v1.0.0.Zip?raw=true" -OutFile "~\Downloadstfflick_v1.0.0.zip"
