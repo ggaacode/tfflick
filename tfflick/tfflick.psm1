@@ -5,6 +5,11 @@ try {
     # Accept version number as input parameter
     $version = $args[0]  
 
+    #Variables
+    $homedir     = $env:USERPROFILE
+    $tfflickpath = $homedir+"\.tfflick"
+    $tfversions  = $tfflickpath+"\tfversions"
+
     # Present full list of versions if no argument was provided
     if  (  -not($version)) {
         
@@ -17,8 +22,8 @@ try {
         
         # Create list of options to be presented to user. Format: 1.3.4 - terraform_1.3.4
         $shortversionslist = foreach ($i in $list.outerText) {    
-                                       $i.Substring("terraform_".Length, $i.Length-"terraform_".Length)+" - "+$i
-                                     }
+            $i.Substring("terraform_".Length, $i.Length-"terraform_".Length)+" - "+$i
+        }
     
         # Reverse the order of the list to present the latest version at the bottom of the list
         [array]::Reverse($shortversionslist)        
@@ -27,10 +32,8 @@ try {
         Write-Host "Please select a version number and press enter. Example "$list.outerText[0].Substring("terraform_".Length, $list.outerText[0].Length-"terraform_".Length)
         $version = read-Host ($shortversionslist -join "`n ")
     
-    }
-    
-    # Display tfflick usage options
-    if ($version -like "-h" -or $version -like "help") {
+    }        
+    elseif ($version -like "-h" -or $version -like "help") { # Display tfflick usage options
         $tfflickusage = "## Usage
 
         * tfflick - no arguments
@@ -42,25 +45,18 @@ try {
         
         Write-Host $tfflickusage
 
+        break
     }
     
     # Set version format as the file downloads as terraform.exe
     $versionfile = "terraform_"+$version+".exe"
     
-    # Create tfflick required file structure
-    $homedir = $env:USERPROFILE
-    $tfflickpath = $homedir+"\.tfflick"
-    $tfversions = $tfflickpath+"\tfversions"
-    
+    # Create tfflick required file structure    
     if (-not(Test-Path -Path $tfflickpath)) {
-    Write-Host "Creating $tfflickpath\$tfversions directory"
-    New-Item $tfflickpath -ItemType Directory
+       Write-Host "Creating $tfflickpath\$tfversions directory"
+       New-Item $tfflickpath\$tfversions -ItemType Directory
     }
-    # if(-not(Test-Path -Path $tfversions)) {
-    # Write-Host "Creating $tfversions directory"
-    # New-Item $tfversions -ItemType Directory
-    # }
-    
+        
     # Set url and zip file format
     $url = "https://releases.hashicorp.com/terraform/"+$version+"/terraform_"+$version+"_windows_amd64.zip"
     $zipfile = "terraform_"+$version+"_windows_amd64.zip"
