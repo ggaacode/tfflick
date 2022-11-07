@@ -24,12 +24,17 @@ Run `.\install_tfflick.ps1`
 * Create an entry in the User `PATH`
 * Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
 
-# Usage
+## Usage
 
-## `tfflick`
+### `tfflick`
 * Returns a list of available Terraform versions
 * Enter the required version at the prompt
 
-## `tfflick {version number}`
+### `tfflick {version number}`
 * To flick to a specific version number, pass it as the argument. For example `tfflick 1.3.4`
 
+## Release Notes
+
+## 1.0.0
+
+* Initial release of `tfflick` module
