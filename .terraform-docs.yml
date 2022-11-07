@@ -1,0 +1,32 @@
+formatter: "markdown"
+
+version: ""
+
+header-from: HEADER.md
+
+recursive:
+  # Enanble if module contains submodules
+  enabled: false
+  path: modules
+
+content: |-
+  {{ .Header }}
+
+  {{ include "USAGE.md" }}
+
+  {{ include "RELEASE_NOTES.md" }}  
+
+
+output:
+  file: "./README.md"
+  mode: replace
+  template: |-
+    {{ .Content }}
+
+sort:
+  enabled: true
+  by: required
+
+settings:
+  escape: false
+
