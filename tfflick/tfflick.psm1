@@ -160,19 +160,7 @@ Function __tfflick_menu (){
 
 try {    
     # Accept version number as input parameter
-    $argument = $args[0]  
-
-    #Variables
-    $homedir     = $env:USERPROFILE
-    $tfflickpath = $homedir+"\.tfflick"
-    $tfversions  = $tfflickpath+"\tfversions"    
-    $versionfile = "terraform_"+$argument+".exe" # Set version format as the file downloads as terraform.exe
-    
-    # Create tfflick and tfversions working directories to hold all downloaded Terraform versions if it doesn't exist    
-    if (-not(Test-Path -Path $tfflickpath)) {
-       Write-Host "Creating $tfflickpath\$tfversions directory"
-       New-Item $tfflickpath\$tfversions -ItemType Directory
-    }
+    $argument = $args[0]      
     Function __tfflick_worker {
 
         Param(
@@ -186,6 +174,12 @@ try {
         $tfflickpath = $homedir+"\.tfflick"
         $tfversions  = $tfflickpath+"\tfversions"    
         $versionfile = "terraform_"+$argument+".exe" # Set version format as the file downloads as terraform.exe
+
+        # Create tfflick and tfversions working directories to hold all downloaded Terraform versions if it doesn't exist    
+        if (-not(Test-Path -Path $tfflickpath)) {
+            Write-Host "Creating $tfflickpath\$tfversions directory"
+            New-Item $tfflickpath\$tfversions -ItemType Directory
+        }
 
         # Set url and zip file format
         $url = "https://releases.hashicorp.com/terraform/"+$argument+"/terraform_"+$argument+"_windows_amd64.zip"
