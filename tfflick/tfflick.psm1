@@ -157,20 +157,60 @@ Function __tfflick_menu (){
     }
 }
 
-function tfflick {
+Function tfflick {
 
-try {
-
+try {    
     # Accept version number as input parameter
-    $version = $args[0]  
+    $argument = $args[0]  
 
     #Variables
     $homedir     = $env:USERPROFILE
     $tfflickpath = $homedir+"\.tfflick"
-    $tfversions  = $tfflickpath+"\tfversions"
+    $tfversions  = $tfflickpath+"\tfversions"    
+    $versionfile = "terraform_"+$argument+".exe" # Set version format as the file downloads as terraform.exe
+    
+    # Create tfflick and tfversions working directories to hold all downloaded Terraform versions if it doesn't exist    
+    if (-not(Test-Path -Path $tfflickpath)) {
+       Write-Host "Creating $tfflickpath\$tfversions directory"
+       New-Item $tfflickpath\$tfversions -ItemType Directory
+    }
+    Function __tfflick_worker {
 
-    # Present full list of versions if no argument was provided
-    if  (  -not($version)) {
+        Param(
+            $argument,
+            $tfversions,
+            $versionfile,
+            $tfflickpath
+        )
+
+        $homedir     = $env:USERPROFILE
+        $tfflickpath = $homedir+"\.tfflick"
+        $tfversions  = $tfflickpath+"\tfversions"    
+        $versionfile = "terraform_"+$argument+".exe" # Set version format as the file downloads as terraform.exe
+
+        # Set url and zip file format
+        $url = "https://releases.hashicorp.com/terraform/"+$argument+"/terraform_"+$argument+"_windows_amd64.zip"
+        $zipfile = "terraform_"+$argument+"_windows_amd64.zip"
+          
+        # Check if file files already exists. If it does, don't download.
+        if (Test-Path -Path $tfversions"\"$versionfile) {
+           Write-Host "Version $argument already downloaded"
+        }
+        elseif ( -not(Test-Path -Path $tfversions"\"$versionfile))
+        {
+        # Download file if not already in the system
+           $ProgressPreference = 'SilentlyContinue'       
+           Invoke-WebRequest $url -OutFile $tfflickpath"\"$zipfile
+           Write-Host "Downloading version $argument"
+           Expand-Archive $tfflickpath"\"$zipfile -DestinationPath $tfversions -Force
+           Rename-Item -Path $tfversions"\terraform.exe" -NewName $versionfile -Force       
+           Remove-Item -Path $tfflickpath"\"$zipfile -Force
+        }
+        # Link terraform.exe to selected version.
+        New-Item -ItemType HardLink -Path $tfflickpath -Name terraform.exe -Value $tfversions"\"$versionfile -Force
+    }
+
+    if  (  -not($argument)) { # Present full list of versions if no argument is provided
         
         # Retrieve list of available Terraform versions
         $ProgressPreference = 'SilentlyContinue'
@@ -180,73 +220,44 @@ try {
         } | Select-Object outerText
         
         # Create list of options to be presented to user. Format: 1.3.4 - terraform_1.3.4
-        # $shortversionslist = foreach ($i in $list.outerText) {    
-        #     $i.Substring("terraform_".Length, $i.Length-"terraform_".Length)+" - "+$i
-        # }
         $shortversionslist = foreach ($i in $list.outerText) {    
             $i.Substring("terraform_".Length, $i.Length-"terraform_".Length)
         }
-    
-        # Reverse the order of the list to present the latest version at the bottom of the list
-        # [array]::Reverse($shortversionslist)        
-        
-        # Set the version to the user selection
-        #Write-Host "Please select a version number and press enter. Example "$list.outerText[0].Substring("terraform_".Length, $list.outerText[0].Length-"terraform_".Length)
-        #$version = read-Host ($shortversionslist -join "`n ")
 
+        # Display menu list of all available Terraform versions
         $Title = " tfflick `n Select the desired Terraform version and press enter. `n"
         $Options = $shortversionslist
         $Selection = __tfflick_menu -MenuTitle $Title -MenuOptions $Options -Columns "auto" -MaximumColumnWidth 20 -ShowCurrentSelection $True
         Write-Host "You selected version " $shortversionslist[$Selection]
-        $version = $shortversionslist[$Selection]
-    
+        $argument = $shortversionslist[$Selection]
+
+        __tfflick_worker -argument $argument
+    }
+    elseif ($argument -match "^[0-9]+.[0-9]+.[0-9]+$") {
+        __tfflick_worker -argument $argument
     }        
-    elseif ($version -like "-h" -or $version -like "help") { # Display tfflick usage options
+    elseif ($argument -like "-h" -or $argument -like "help") { # Display tfflick usage options
         $tfflickusage = "## Usage
 
-        * tfflick - no arguments
-        - Returns a list of available Terraform versions
-        - Enter the required version at the prompt
+        * tfflick (no arguments)
+        - Returns a menu list of available Terraform versions
+        - Use your arrow keys to select the desired version and press enter
         
         * tfflick {version number}
-        - To flick to a specific version number, pass the desired version as the argument. For example tfflick 1.3.4 `n"
+        - To flick to a specific version number, pass the desired version as the argument. For example tfflick 1.3.4 
+
+        * tfflick -h or tfflick help
+        - Displays tfflick usage options `n"
         
         Write-Host $tfflickusage
 
         break
     }
-    
-    # Set version format as the file downloads as terraform.exe
-    $versionfile = "terraform_"+$version+".exe"
-    
-    # Create tfflick required file structure    
-    if (-not(Test-Path -Path $tfflickpath)) {
-       Write-Host "Creating $tfflickpath\$tfversions directory"
-       New-Item $tfflickpath\$tfversions -ItemType Directory
-    }
-        
-    # Set url and zip file format
-    $url = "https://releases.hashicorp.com/terraform/"+$version+"/terraform_"+$version+"_windows_amd64.zip"
-    $zipfile = "terraform_"+$version+"_windows_amd64.zip"
-    
-    # Change directory to required location
-        
-    # Check if file files already exists. If it does, don't download.
-    if (Test-Path -Path $tfversions"\"$versionfile) {
-       Write-Host "Version $version already downloaded"
-    }
-    elseif ( -not(Test-Path -Path $tfversions"\"$versionfile))
-    {
-    # Download file if not already in the system
-       $ProgressPreference = 'SilentlyContinue'       
-       Invoke-WebRequest $url -OutFile $tfflickpath"\"$zipfile
-       Write-Host "Downloading version $version"
-       Expand-Archive $tfflickpath"\"$zipfile -DestinationPath $tfversions -Force
-       Rename-Item -Path $tfversions"\terraform.exe" -NewName $versionfile -Force       
-       Remove-Item -Path $tfflickpath"\"$zipfile -Force
-    }
-    # Link terraform.exe to selected version.
-    New-Item -ItemType HardLink -Path $tfflickpath -Name terraform.exe -Value $tfversions"\"$versionfile -Force
+    else {
+       # Display error message if something goes wrong
+       Write-Host "Someting went wrong. Please provide a version number as an argument. For example tfflick 1.3.4"
+       Write-Host "To view a full list of available versions try tfflick (with no arguments)"
+    }    
 }
 catch {
     # Display error message if something goes wrong

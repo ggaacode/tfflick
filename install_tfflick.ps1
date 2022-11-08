@@ -23,7 +23,7 @@ try {
         Get-Content $destination".\tfflickv2" -ErrorAction STOP
     }
 
-    # Check if module has been installed correctly
+    # Check module has been installed correctly
     Write-Host "**********************"
     Write-Host "Checking if tfflick was installed successfully `n"
     
@@ -37,7 +37,7 @@ try {
         Write-Host "Module not found in module library, please check installation log"
     }  
     
-    # Create tfversions directory to hold all downloaded Terraform versions        
+    # Create tfflick and tfversions working directories to hold all downloaded Terraform versions        
     if (-not(Test-Path -Path $tfversions)) {
         Write-Host "**********************"
         Write-Host "Creating $tfversions directory"
