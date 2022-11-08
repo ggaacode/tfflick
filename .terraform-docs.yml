@@ -18,6 +18,7 @@ content: |-
 
   {{ include "RELEASE_NOTES.md" }}  
 
+  {{ include "CREDITS.md" }}
 
 output:
   file: "./README.md"
