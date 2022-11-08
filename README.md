@@ -7,6 +7,10 @@ Installation is quick and and you can start using Terraform straight away.
 
 **tfflick** Currently has been tested on Powershell version 5.1 and currently only downloads the Windows AMD64 versions of the Terraform executable
 
+## Download
+
+* Powershell `Invoke-WebRequest "https://github.com/ggaacode/tfflick/blob/main/tfflick_v1.0.0.Zip?raw=true" -OutFile tfflick_v1.0.0.zip`
+
 ## Installation
 
 ### Using the installer
