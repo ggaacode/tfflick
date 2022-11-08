@@ -10,7 +10,18 @@ try {
     $destination = $env:PSModulePath -split ";" | Where-Object {$_ -like $homedir+"*WindowsPowerShell\Modules*"}
 
     # Copy tfflick module to destination directory
+    Write-Host "**********************"
+    Write-Host "Copying module to Powershell Module path - "$destination
     Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force
+
+    # Check tfflick has been copied correctly
+    if (Test-Path -Path $destination".\tfflick") {
+        Write-Host "Module copied successfuly to Powershell Module path"
+    }
+    else {
+        Write-Host "Module was not found at destination check installation log"
+        Get-Content $destination".\tfflickv2" -ErrorAction STOP
+    }
 
     # Check if module has been installed correctly
     Write-Host "**********************"
@@ -21,13 +32,16 @@ try {
         Write-Host "tfflick module found in the module library"
         Write-Host $checkmodule
         Write-Host "`n"       
+    }
+    else {
+        Write-Host "Module not found in module library, please check installation log"
     }  
     
     # Create tfversions directory to hold all downloaded Terraform versions        
     if (-not(Test-Path -Path $tfversions)) {
-    Write-Host "**********************"
-    Write-Host "Creating $tfversions directory"
-    New-Item $tfversions -ItemType Directory
+        Write-Host "**********************"
+        Write-Host "Creating $tfversions directory"
+        New-Item $tfversions -ItemType Directory
     }
    
     # Create path if it doesn't exist
@@ -56,30 +70,37 @@ try {
         Write-Host "`n"
         Write-Host "**********************"
         Write-Host "Test tfflick and set Terraform to latest version"
+        Write-Host "`n"
+    }
 
-        $ProgressPreference = 'SilentlyContinue'
+        
+    # Test tfflick and set Terraform to latest version if not already set
+    Write-Host "Check if terraform.exe is already set `n"
+    if (Test-Path -Path $tfflickpath"\terraform.exe" -PathType leaf) {
+        Write-Host "terraform.exe has been previously set to:" 
+        $terraformversion = terraform --version
+        $terraformversion  
+    }
+    else {    
         $versionslist = Invoke-WebRequest -URI https://releases.hashicorp.com/terraform/
         $list = $versionslist.Links | Where-Object {
             $_.outerText -match "^terraform_[0-9]+.[0-9]+.[0-9]+$" -and $_.outerText -notlike "*_0.1.*"
         } | Select-Object outerText
         
         $latestversion = $list.outerText[0].Substring("terraform_".Length, $list.outerText[0].Length-"terraform_".Length)
-
+    
         Write-Host "Terraform latest version is " $latestversion
-
+        Write-Host "Setting Terraform to version " $latestversion
+    
         tfflick $latestversion
-
-        Write-Host "Testing terraform --version command `n"
-
         $terraformversion = terraform --version
-        Write-Host "`n"
-
-        Write-Host $terraformversion
-       
-        }
+        Write-Host "Testing terraform --version command" 
+        $terraformversion
+    }
+    
 }
 catch {
-    Write-Host "Something went wrong, ensure you have opened Powershell as administrator."
+    Write-Host "Something went wrong, please review the installation log at "$homedir"\.tfflick\tfflick_install_log.txt"
 }
 finally {
     Stop-Transcript 
