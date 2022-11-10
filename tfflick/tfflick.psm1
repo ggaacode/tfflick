@@ -167,7 +167,10 @@ Function __tfflick_menu (){
 
 #********************** tfflick **********************
 
-# tfflick code starts here    
+# tfflick code starts here  
+
+# Set base URL to Hashicorp releases
+$baseurl = "https://releases.hashicorp.com/terraform/"  
     Function __tfflick_worker {    
         Param(
             [Parameter(Mandatory=$True, Position=0, HelpMessage="Argument to make a decision")]$tfw_argument            
@@ -178,15 +181,15 @@ Function __tfflick_menu (){
         $tfversions  = $tfflickpath+"\tfversions"    
         $versionfile = "terraform_"+$tfw_argument+".exe" # Set version format as the file downloads as terraform.exe
 
+        # Set url and zip file format        
+        $url =  $baseurl+$tfw_argument+"/terraform_"+$tfw_argument+"_windows_amd64.zip"
+        $zipfile = "terraform_"+$tfw_argument+"_windows_amd64.zip"
+
         # Create tfflick and tfversions working directories to hold all downloaded Terraform versions if it doesn't exist    
         if (-not(Test-Path -Path $tfflickpath)) {
             Write-Host "Creating $tfflickpath\$tfversions directory"
             New-Item $tfflickpath\$tfversions -ItemType Directory
-        }
-
-        # Set url and zip file format
-        $url = "https://releases.hashicorp.com/terraform/"+$tfw_argument+"/terraform_"+$tfw_argument+"_windows_amd64.zip"
-        $zipfile = "terraform_"+$tfw_argument+"_windows_amd64.zip"
+        }       
           
         # Check if file files already exists. If it does, don't download.
         if (Test-Path -Path $tfversions"\"$versionfile) {
@@ -210,7 +213,7 @@ Function __tfflick_menu (){
         
         # Retrieve list of available Terraform versions
         $ProgressPreference = 'SilentlyContinue'
-        $versionslist = Invoke-WebRequest -URI https://releases.hashicorp.com/terraform/
+        $versionslist = Invoke-WebRequest -URI $baseurl
         $list = $versionslist.Links | Where-Object {
             $_.outerText -match "^terraform_[0-9]+.[0-9]+.[0-9]+$" -and $_.outerText -notlike "*_0.1.*"
         } | Select-Object outerText
@@ -222,10 +225,12 @@ Function __tfflick_menu (){
         $Title = "#### tfflick ####`n Select the desired Terraform version and press enter. `n This is the argument $argument"
         $Options = $shortversionslist
         $Selection = __tfflick_menu -MenuTitle $Title -MenuOptions $Options -Columns 12 -MaximumColumnWidth 20 -ShowCurrentSelection $True
+        Clear-Host
         Write-Host "You selected version " $shortversionslist[$Selection]
         $argument = $shortversionslist[$Selection]
-
-        __tfflick_worker -tfw_argument $argument
+        
+        # Call __tfflick_worker function with selected version
+        __tfflick_worker -tfw_argument $argument        
     }
     elseif ($argument -match "^[0-9]+.[0-9]+.[0-9]+$") {
         __tfflick_worker -tfw_argument $argument
