@@ -37,6 +37,7 @@ try {
 
     Add-Content -Path $MsPSprofileFile -Value $aliases
 
+   #. $profile.CurrentUserCurrentHost 
 
     # Check tfflick has been copied correctly
     if (Test-Path -Path $destination"\Microsoft.PowerShell_profile.ps1" -PathType Leaf) {
@@ -109,6 +110,7 @@ try {
         $terraformversion  
     }
     else {    
+        Write-Host "Download and install latest Terraform version" 
         $versionslist = Invoke-WebRequest -URI https://releases.hashicorp.com/terraform/
         $list = $versionslist.Links | Where-Object {
             $_.outerText -match "^terraform_[0-9]+.[0-9]+.[0-9]+$" -and $_.outerText -notlike "*_0.1.*"
@@ -118,8 +120,10 @@ try {
     
         Write-Host "Terraform latest version is " $latestversion
         Write-Host "Setting Terraform to version " $latestversion
-    
-        tfflick $latestversion
+        
+        Start-Process Powershell -ArgumentList "tfflick $latestversion"
+        
+        #tfflick $latestversion
         $terraformversion = terraform --version
         Write-Host "Testing terraform --version command" 
         $terraformversion
