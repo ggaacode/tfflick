@@ -1,26 +1,37 @@
 try {
     
-    $homedir = $env:USERPROFILE
-    $tfflickpath = $homedir+"\.tfflick"
-    $tfversions  = $tfflickpath+"\tfversions"
+    $homedir         = $env:USERPROFILE
+    $tfflickpath     = $homedir+"\.tfflick"
+    $tfversions      = $tfflickpath+"\tfversions"
+    $installationlog = $tfflickpath+"\tfflick_install_log.txt"
     
     Start-Transcript -Path $tfflickpath"\tfflick_install_log.txt" -Append
     
     # Find destination directory - typically in the format C:\<home directory>\Documents\WindowsPowerShell\Modules
-    $destination = $env:PSModulePath -split ";" | Where-Object {$_ -like $homedir+"*\Documents\WindowsPowerShell\Modules*"}
+    $env:PSModulePath -split ";" | ForEach-Object -Process {
+        if($_.Substring(0,$homedir.Length) -eq $homedir -and $_ -like "*WindowsPowerShell*") {$destination = $_}
+    }
 
-    # Copy tfflick module to destination directory
-    Write-Host "**********************"
-    Write-Host "Copying module to Powershell Module path - "$destination
-    Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force
+    if ($destination) {
+        # Copy tfflick module to destination directory
+        Write-Host "**********************"
+        Write-Host "Copying module to Powershell Module path - "$destination
+        Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force
+    }
+    else {
+        Write-Host "User modules destination not found please check installation log at "$installationlog
+        break
+    }
+
+    
 
     # Check tfflick has been copied correctly
     if (Test-Path -Path $destination".\tfflick") {
         Write-Host "Module copied successfuly to Powershell Module path"
     }
     else {
-        Write-Host "Module was not found at destination check installation log"
-        Get-Content ".\generateErrorPath" -ErrorAction STOP
+        Write-Host "Module was not found at destination check installation log at "$installationlog
+        break
     }
 
     # Check module has been installed correctly
@@ -34,10 +45,10 @@ try {
         Write-Host "`n"       
     }
     else {
-        Write-Host "Module not found in module library, please check installation log"
-        Get-Content ".\generateErrorPath" -ErrorAction STOP
+        Write-Host "Module not found in module library, please check installation log at "$installationlog
+        break        
     }  
-    
+   
     # Create tfflick and tfversions working directories to hold all downloaded Terraform versions        
     if (-not(Test-Path -Path $tfversions)) {
         Write-Host "**********************"
@@ -103,8 +114,11 @@ try {
     
 }
 catch {
-    Write-Host "Something went wrong, please review the installation log at "$homedir"\.tfflick\tfflick_install_log.txt"
+    Write-Host "Something went wrong, please review the installation log at "$installationlog
 }
 finally {
+    Write-Host "Review installation log at "$installationlog
+    Write-Host -NoNewLine 'Press any key to continue...';
+    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
     Stop-Transcript 
 }
