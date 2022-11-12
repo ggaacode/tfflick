@@ -29,4 +29,6 @@ Run `.\install_tfflick.ps1`
 * Create an entry in the User `PATH`
 * Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
 
+### Removal
 
+* Currently only manual removal is possible. Undo all steps in Manual installation. 

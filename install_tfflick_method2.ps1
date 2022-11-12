@@ -1,60 +1,68 @@
 try {
     
-    $homedir         = $env:USERPROFILE
-    $tfflickpath     = $homedir+"\.tfflick"
-    $tfversions      = $tfflickpath+"\tfversions"
-    $installationlog = $tfflickpath+"\tfflick_install_log.txt"
+    $homedir = $env:USERPROFILE
+    $tfflickpath = $homedir+"\.tfflick"
+    $tfversions  = $tfflickpath+"\tfversions"
     
     Start-Transcript -Path $tfflickpath"\tfflick_install_log.txt" -Append
     
-    # # Find destination directory - typically in the format C:\<home directory>\Documents\WindowsPowerShell\Modules
-    $destination = $env:PSModulePath -split ";" | Where-Object {
-        $_.Substring(0,$homedir.Length) -eq $homedir -and $_ -like $homedir+"*WindowsPowerShell\Modules*"}
-    if ($destination.Count -gt 0) {        
-        Write-Host "**********************"
-        Write-Host "Copying module to Powershell Module path - "$destination     
-        # Copy tfflick module to destination directory
-        Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force    
+    # Find destination directory - typically in the format C:\<home directory>\Documents\WindowsPowerShell\Modules
+    $destination = $env:PSModulePath -split ";" | Where-Object {$_ -like $homedir+"*\Documents\WindowsPowerShell*"}
+
+    # Copy tfflick module to destination directory
+    Write-Host "**********************"
+    Write-Host "Copying module to Powershell Module path - "$destination
+    # Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force
+    
+    if ($destination -match '\\WindowsPowerShell\\') {
+
+        if ( $destination -match '\\WindowsPowerShell$'){
+            Write-Host "Powershell profile destination found"
+        } else {
+            $wps = "WindowsPowerShell"        
+            $destination = $destination.Substring(0, ($destination.IndexOf($wps)+$wps.Length))
+        }
+
+        $MsPSprofileFile = $destination+"\Microsoft.PowerShell_profile.ps1"
+        New-Item -path $MsPSprofileFile -ItemType File -Force  
     }
-    elseif ($destination.Count -eq  0) {
-        $newPSModuleDirectory = $homedir+"\Documents\WindowsPowerShell\Modules"
-        Write-Host "**********************"
-        Write-Host "Creating Powershell Module path - "$newPSModuleDirectory
-        New-Item $newPSModuleDirectory -ItemType Directory
-        # Copy tfflick module to destination directory after creating WindowsPowerShell\Modules directory
-        Copy-Item -Path ".\tfflick" -Destination $newPSModuleDirectory -Recurse -Force 
-    }
-    else {
-        Write-Host "User modules destination not found please check installation log at "$installationlog
-        break
-    }
-    # Copy tfflick module to destination directory after finding or creating WindowsPowerShell\Modules destination
-    Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force    
+
+    $tfflick_function_content = Get-Content -Path ".\tfflick\tfflick.psm1"
+    Add-Content -Path $MsPSprofileFile -Value $tfflick_function_content
+
+    $aliases = @'
+    New-Alias -Name Tf-Flick tfflick
+    New-Alias -Name tfswitch tfflick
+'@
+
+    Add-Content -Path $MsPSprofileFile -Value $aliases
+
+   #. $profile.CurrentUserCurrentHost 
 
     # Check tfflick has been copied correctly
-    if (Test-Path -Path $destination".\tfflick") {
+    if (Test-Path -Path $destination"\Microsoft.PowerShell_profile.ps1" -PathType Leaf) {
         Write-Host "Module copied successfuly to Powershell Module path"
     }
     else {
-        Write-Host "Module was not found at destination check installation log at "$installationlog
-        break
+        Write-Host "Module was not found at destination check installation log"
+        Get-Content ".\generateErrorPath" -ErrorAction STOP
     }
 
     # Check module has been installed correctly
     Write-Host "**********************"
     Write-Host "Checking if tfflick was installed successfully `n"
     
-    $checkmodule = Get-Module -ListAvailable | Where-Object {$_.name -like "tfflick"} | Select-Object Name
-    if ($checkmodule.Name -eq "tfflick") { 
-        Write-Host "tfflick module found in the module library"
-        Write-Host $checkmodule
-        Write-Host "`n"       
-    }
-    else {
-        Write-Host "Module not found in module library, please check installation log at "$installationlog
-        break        
-    }  
-   
+    # $checkmodule = Get-Module -ListAvailable | Where-Object {$_.name -like "tfflick"} | Select-Object Name
+    # if ($checkmodule.Name -eq "tfflick") { 
+    #     Write-Host "tfflick module found in the module library"
+    #     Write-Host $checkmodule
+    #     Write-Host "`n"       
+    # }
+    # else {
+    #     Write-Host "Module not found in module library, please check installation log"
+    #     Get-Content ".\generateErrorPath" -ErrorAction STOP
+    # }  
+    
     # Create tfflick and tfversions working directories to hold all downloaded Terraform versions        
     if (-not(Test-Path -Path $tfversions)) {
         Write-Host "**********************"
@@ -77,9 +85,9 @@ try {
         Write-Host "`r"
 
         Write-Host "Adding tfflick to User path environment variable `n"
-        # Adding tfflick to User path environment variable
+        # Adding tfflick to User path environment variable 
         [Environment]::SetEnvironmentVariable("Path", $tfflickversionspathenv + [Environment]::GetEnvironmentVariable("Path", "User"), "User")
-        [Environment]::SetEnvironmentVariable("Path", $tfflickpathenv + [Environment]::GetEnvironmentVariable("Path", "User"), "User")        
+        [Environment]::SetEnvironmentVariable("Path", $tfflickpathenv + [Environment]::GetEnvironmentVariable("Path", "User"), "User")  
 
         # Refresh environmental variables
         $env:Path = [Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [Environment]::GetEnvironmentVariable("Path","User")
@@ -102,6 +110,7 @@ try {
         $terraformversion  
     }
     else {    
+        Write-Host "Download and install latest Terraform version" 
         $versionslist = Invoke-WebRequest -URI https://releases.hashicorp.com/terraform/
         $list = $versionslist.Links | Where-Object {
             $_.outerText -match "^terraform_[0-9]+.[0-9]+.[0-9]+$" -and $_.outerText -notlike "*_0.1.*"
@@ -111,20 +120,18 @@ try {
     
         Write-Host "Terraform latest version is " $latestversion
         Write-Host "Setting Terraform to version " $latestversion
-    
-        tfflick $latestversion
+        
+        Start-Process Powershell -ArgumentList "tfflick $latestversion"
+        
+        #tfflick $latestversion
         $terraformversion = terraform --version
         Write-Host "Testing terraform --version command" 
         $terraformversion
-    }
-    
+    }   
 }
 catch {
-    Write-Host "Something went wrong, please review the installation log at "$installationlog
+    Write-Host "Something went wrong, please review the installation log at "$homedir"\.tfflick\tfflick_install_log.txt"
 }
-finally {
-    Write-Host "Review installation log at "$installationlog
-    Write-Host -NoNewLine 'Press any key to continue...';
-    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+finally {    
     Stop-Transcript 
 }

@@ -28,17 +28,38 @@ Run `.\install_tfflick.ps1`
 * Create an entry in the User `PATH`
 * Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
 
+### Removal
+
+* Currently only manual removal is possible. Undo all steps in Manual installation.
+
 ## Usage
 
 ### `tfflick`
-* Returns a list of available Terraform versions
-* Enter the required version at the prompt
+* Returns a menu list of available Terraform versions
+* Use your arrow keys to select the desired version and press enter
 
 ### `tfflick {version number}`
-* To flick to a specific version number, pass desired version as the argument. For example `tfflick 1.3.4`
+* Pass desired version as the argument. For example `tfflick 1.3.4`
+
+### `tfflick -h` or `tfflick help`
+* Displays `tfflick` usage options
 
 ## Release Notes
 
 ## 1.0.0
 
 * Initial release of `tfflick` module
+
+## To-Do
+
+* Currently working on improving the menu option - The no argument option of `tfflick`. It displays ok when the Powershell window is fully expanded. If the window is not in full mode, the top part of the list is not visible, in this case is better to use the option `tfflick {version number}` 
+* Make available for Windows 32 bit architecture - availability to download the 32 bit version of the Terraform executable
+* Provide Un-installer option
+* Improve menu option - The no argument option of `tfflick`
+* Tidy up
+
+## Credits
+ 
+ * Create-Menu function developed by JDDellGuy at https://community.spiceworks.com/people/josiahdeal3479
+   https://community.spiceworks.com/scripts/show/4785-create-menu-2-0-arrow-key-driven-powershell-menu-for-scripts
+   Renamed the function to __tfflick_menu   
