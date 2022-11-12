@@ -7,23 +7,29 @@ try {
     
     Start-Transcript -Path $tfflickpath"\tfflick_install_log.txt" -Append
     
-    # Find destination directory - typically in the format C:\<home directory>\Documents\WindowsPowerShell\Modules
-    $env:PSModulePath -split ";" | ForEach-Object -Process {
-        if($_.Substring(0,$homedir.Length) -eq $homedir -and $_ -like "*WindowsPowerShell*") {$destination = $_}
-    }
-
-    if ($destination) {
-        # Copy tfflick module to destination directory
+    # # Find destination directory - typically in the format C:\<home directory>\Documents\WindowsPowerShell\Modules
+    $destination = $env:PSModulePath -split ";" | Where-Object {
+        $_.Substring(0,$homedir.Length) -eq $homedir -and $_ -like $homedir+"*WindowsPowerShell\Modules*"}
+    if ($destination.Count -gt 0) {        
         Write-Host "**********************"
-        Write-Host "Copying module to Powershell Module path - "$destination
-        Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force
+        Write-Host "Copying module to Powershell Module path - "$destination     
+        # Copy tfflick module to destination directory
+        Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force    
+    }
+    elseif ($destination.Count -eq  0) {
+        $newPSModuleDirectory = $homedir+"\Documents\WindowsPowerShell\Modules"
+        Write-Host "**********************"
+        Write-Host "Creating Powershell Module path - "$newPSModuleDirectory
+        New-Item $newPSModuleDirectory -ItemType Directory
+        # Copy tfflick module to destination directory after creating WindowsPowerShell\Modules directory
+        Copy-Item -Path ".\tfflick" -Destination $newPSModuleDirectory -Recurse -Force 
     }
     else {
         Write-Host "User modules destination not found please check installation log at "$installationlog
         break
     }
-
-    
+    # Copy tfflick module to destination directory after finding or creating WindowsPowerShell\Modules destination
+    Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force    
 
     # Check tfflick has been copied correctly
     if (Test-Path -Path $destination".\tfflick") {
