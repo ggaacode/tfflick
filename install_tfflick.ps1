@@ -27,9 +27,7 @@ try {
     else {
         Write-Host "User modules destination not found please check installation log at "$installationlog
         break
-    }
-    # Copy tfflick module to destination directory after finding or creating WindowsPowerShell\Modules destination
-    Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force    
+    }       
 
     # Check tfflick has been copied correctly
     if (Test-Path -Path $destination".\tfflick") {
