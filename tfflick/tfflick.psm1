@@ -79,8 +79,57 @@ Function __tfflick_menu (){
         Write-Host "$MenuTitle"
         
         If ($ShowCurrentSelection -eq $True){
-            $Host.UI.RawUI.WindowTitle = "CURRENT SELECTION: $($MenuOptions[$Selection])"
+           $Host.UI.RawUI.WindowTitle = "CURRENT SELECTION: $($MenuOptions[$Selection])"
         }
+
+        # $rowsIndex = 4
+        # $listStart
+        # $listEnd
+        # For ($i=0; $i -lt $RowQty; $i++){
+
+        #     For($listEnd=0; $listEnd -le (($Columns-1)*$rowsIndex);$j+=$rowsIndex){                 
+                
+        #          if ($Selection -le $rowsIndex) {
+        #              $listStart = 0
+        #              $listEnd   = $rowsIndex
+        #          }
+        #          elseif ($Selection -gt $rowsIndex) {
+        #              $listStart = $Selection - $rowsIndex
+        #              $listEnd   = $Selection
+        #          }
+
+               
+        #         Write-Host "$($MenuListing[$i+$j])"
+        #     }  
+
+        # }
+
+        # For ($i=0; $i -lt 5; $i++){
+
+        #     For($j=0; $j -le (($Columns-1)*5);$j+=5){
+
+        #         If($j -eq (($Columns-1)*5)){
+        #             If(($i+$j) -eq $Selection){
+        #                 Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
+        #             } Else {
+        #                 Write-Host "$($MenuListing[$i+$j])"
+        #             }
+        #         } Else {
+
+        #             If(($i+$j) -eq $Selection){
+        #                 Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
+        #             } Else {
+        #                 Write-Host "$($MenuListing[$i+$j])" -NoNewline
+        #             }
+        #         }
+                
+        #     }
+
+        # }
+
+
+
+        # Write-Host -ForegroundColor Red "$Selection"
 
         For ($i=0; $i -lt $RowQty; $i++){
 
@@ -106,7 +155,7 @@ Function __tfflick_menu (){
         }
 
         #Uncomment the below line if you need to do live debugging of the current index selection. It will put it in green below the selection listing.
-        #Write-Host -ForegroundColor Green "$Selection"
+        # Write-Host -ForegroundColor Green "$Selection"
 
         $KeyInput = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown").virtualkeycode
 
@@ -224,6 +273,7 @@ $baseurl = "https://releases.hashicorp.com/terraform/"
         # Display menu list of all available Terraform versions
         $Title = "#### tfflick ####`n Select the desired Terraform version and press enter. `n This is the argument $argument"
         $Options = $shortversionslist
+        
         $Selection = __tfflick_menu -MenuTitle $Title -MenuOptions $Options -Columns 12 -MaximumColumnWidth 20 -ShowCurrentSelection $True
         Clear-Host
         Write-Host "You selected version " $shortversionslist[$Selection]
