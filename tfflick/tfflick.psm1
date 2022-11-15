@@ -75,7 +75,7 @@ Function __tfflick_menu (){
     Function __ListSubset {
         [Parameter(Mandatory=$false, HelpMessage="Argument to make a decision")][string] $ListSubset = $MenuListing
 
-        $MenuListing
+        $ListSubset
     }
 
     Clear-Host
@@ -110,11 +110,11 @@ Function __tfflick_menu (){
 
         # }
 
-        # For ($i=0; $i -lt 5; $i++){
+         # For ($i=0; $i -lt $RowQty; $i++){
 
-        #     For($j=0; $j -le (($Columns-1)*5);$j+=5){
+        #     For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
 
-        #         If($j -eq (($Columns-1)*5)){
+        #         If($j -eq (($Columns-1)*$RowQty)){
         #             If(($i+$j) -eq $Selection){
         #                 Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
         #             } Else {
@@ -137,28 +137,28 @@ Function __tfflick_menu (){
 
         # Write-Host -ForegroundColor Red "$Selection"
 
-        For ($i=0; $i -lt $RowQty; $i++){
+        # For ($i=0; $i -lt $RowQty; $i++){
 
-            For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
+        #     For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
 
-                If($j -eq (($Columns-1)*$RowQty)){
-                    If(($i+$j) -eq $Selection){
-                        Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
-                    } Else {
-                        Write-Host "$($MenuListing[$i+$j])"
-                    }
-                } Else {
+        #         If($j -eq (($Columns-1)*$RowQty)){
+        #             If(($i+$j) -eq $Selection){
+        #                 Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
+        #             } Else {
+        #                 Write-Host "$($MenuListing[$i+$j])"
+        #             }
+        #         } Else {
 
-                    If(($i+$j) -eq $Selection){
-                        Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
-                    } Else {
-                        Write-Host "$($MenuListing[$i+$j])" -NoNewline
-                    }
-                }
+        #             If(($i+$j) -eq $Selection){
+        #                 Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
+        #             } Else {
+        #                 Write-Host "$($MenuListing[$i+$j])" -NoNewline
+        #             }
+        #         }
                 
-            }
+        #     }
 
-        }
+        # }
 
         #Uncomment the below line if you need to do live debugging of the current index selection. It will put it in green below the selection listing.
         # Write-Host -ForegroundColor Green "$Selection"
