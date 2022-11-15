@@ -72,6 +72,12 @@ Function __tfflick_menu (){
         $MenuListing += $ScratchArray
     }
     
+    Function __ListSubset {
+        [Parameter(Mandatory=$false, HelpMessage="Argument to make a decision")][string] $ListSubset = $MenuListing
+
+        $MenuListing
+    }
+
     Clear-Host
 
     While($EnterPressed -eq $False){
