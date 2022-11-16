@@ -110,28 +110,34 @@ Function __tfflick_menu (){
 
         # }
 
-         # For ($i=0; $i -lt $RowQty; $i++){
+        $SubsetList = __ListSubset
+        # $SubsetMaxValue = $SubsetList.count-1
+        # $SubsetRowQty = ([Math]::Ceiling(($MaxValue+1)/$Columns))
+        
+        $SubsetList | ForEach-Object 
 
-        #     For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
+         For ($i=0; $i -lt $RowQty; $i++){
 
-        #         If($j -eq (($Columns-1)*$RowQty)){
-        #             If(($i+$j) -eq $Selection){
-        #                 Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
-        #             } Else {
-        #                 Write-Host "$($MenuListing[$i+$j])"
-        #             }
-        #         } Else {
+            For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
 
-        #             If(($i+$j) -eq $Selection){
-        #                 Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
-        #             } Else {
-        #                 Write-Host "$($MenuListing[$i+$j])" -NoNewline
-        #             }
-        #         }
+                If($j -eq (($Columns-1)*$RowQty)){
+                    If(($i+$j) -eq $Selection){
+                        Write-Host -BackgroundColor cyan -ForegroundColor Black "$($SubsetList[$i+$j])"
+                    } Else {
+                        Write-Host "$($SubsetList[$i+$j])"
+                    }
+                } Else {
+
+                    If(($i+$j) -eq $Selection){
+                        Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($SubsetList[$i+$j])" -NoNewline
+                    } Else {
+                        Write-Host "$($SubsetList[$i+$j])" -NoNewline
+                    }
+                }
                 
-        #     }
+            }
 
-        # }
+        }
 
 
 
