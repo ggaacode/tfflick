@@ -10,18 +10,17 @@
 # Renamed the function to __tfflick_menu
 try {
     # Set -h argument to present help options menu
-    if ($h) {$argument = "help"}
+    if ($h) {$argument = "help"}    
 Function __tfflick_menu (){
-    #Start-Transcript "C:\_RRC\MenuLog.txt"
+    #Start-Transcript "C:\_RRC\MenuLog.txt"    
     Param(
         [Parameter(Mandatory=$True)][String]$MenuTitle,
         [Parameter(Mandatory=$True)][array]$MenuOptions,
         [Parameter(Mandatory=$True)][String]$Columns,
         [Parameter(Mandatory=$False)][int]$MaximumColumnWidth=20,
-        [Parameter(Mandatory=$False)][bool]$ShowCurrentSelection=$False
-    )
-
-    # $Columns = 8
+        [Parameter(Mandatory=$False)][bool]$ShowCurrentSelection=$False    )
+    
+    # $Columns = 12
     $MaxValue = $MenuOptions.count-1
     $Selection = 0
     $EnterPressed = $False
@@ -70,14 +69,8 @@ Function __tfflick_menu (){
             $ScratchArray[$j] = " $($ScratchArray[$j]) "
         }
         $MenuListing += $ScratchArray
-    }
+    }    
     
-    Function __ListSubset {
-        [Parameter(Mandatory=$false, HelpMessage="Argument to make a decision")][string] $ListSubset = $MenuListing
-
-        $ListSubset
-    }
-
     Clear-Host
 
     While($EnterPressed -eq $False){
@@ -87,59 +80,34 @@ Function __tfflick_menu (){
         If ($ShowCurrentSelection -eq $True){
            $Host.UI.RawUI.WindowTitle = "CURRENT SELECTION: $($MenuOptions[$Selection])"
         }
-
-        # $rowsIndex = 4
-        # $listStart
-        # $listEnd
-        # For ($i=0; $i -lt $RowQty; $i++){
-
-        #     For($listEnd=0; $listEnd -le (($Columns-1)*$rowsIndex);$j+=$rowsIndex){                 
-                
-        #          if ($Selection -le $rowsIndex) {
-        #              $listStart = 0
-        #              $listEnd   = $rowsIndex
-        #          }
-        #          elseif ($Selection -gt $rowsIndex) {
-        #              $listStart = $Selection - $rowsIndex
-        #              $listEnd   = $Selection
-        #          }
-
-               
-        #         Write-Host "$($MenuListing[$i+$j])"
-        #     }  
-
-        # }
-
-        $SubsetList = __ListSubset
-        # $SubsetMaxValue = $SubsetList.count-1
-        # $SubsetRowQty = ([Math]::Ceiling(($MaxValue+1)/$Columns))
         
-        $SubsetList | ForEach-Object 
+        Write-Host -ForegroundColor Red "$Selection"
+        Write-Host "This is RowQty $RowQty"
+        Write-Host "This is Columns $Columns"
 
-         For ($i=0; $i -lt $RowQty; $i++){
+        For ($i=0; $i -lt $RowQty; $i++){
 
             For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
 
                 If($j -eq (($Columns-1)*$RowQty)){
                     If(($i+$j) -eq $Selection){
-                        Write-Host -BackgroundColor cyan -ForegroundColor Black "$($SubsetList[$i+$j])"
+                        Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
                     } Else {
-                        Write-Host "$($SubsetList[$i+$j])"
+                        Write-Host "$($MenuListing[$i+$j])"
                     }
                 } Else {
 
                     If(($i+$j) -eq $Selection){
-                        Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($SubsetList[$i+$j])" -NoNewline
+                        Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
                     } Else {
-                        Write-Host "$($SubsetList[$i+$j])" -NoNewline
+                        Write-Host "$($MenuListing[$i+$j])" -NoNewline
                     }
                 }
                 
             }
 
         }
-
-
+        Write-Host -ForegroundColor Green "$Selection"
 
         # Write-Host -ForegroundColor Red "$Selection"
 
@@ -286,7 +254,7 @@ $baseurl = "https://releases.hashicorp.com/terraform/"
         $Title = "#### tfflick ####`n Select the desired Terraform version and press enter. `n This is the argument $argument"
         $Options = $shortversionslist
         
-        $Selection = __tfflick_menu -MenuTitle $Title -MenuOptions $Options -Columns 12 -MaximumColumnWidth 20 -ShowCurrentSelection $True
+        $Selection = __tfflick_menu -MenuTitle $Title -MenuOptions $Options -Columns 1 -MaximumColumnWidth 20 -ShowCurrentSelection $True
         Clear-Host
         Write-Host "You selected version " $shortversionslist[$Selection]
         $argument = $shortversionslist[$Selection]
@@ -329,5 +297,4 @@ catch {
     Write-Host "Someting went wrong. Please provide a version number as an argument. For example tfflick 1.3.4"
     Write-Host "To view a full list of available versions try tfflick (with no arguments)"
 }
-
 }
