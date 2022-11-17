@@ -34,10 +34,9 @@ Function __tfflick_menu (){
         $Columns = $MenuOptions.count
     }
 
-    $RowQty = ([Math]::Ceiling(($MaxValue+1)/$Columns))
-        
+    $RowQty = ([Math]::Ceiling(($MaxValue+1)/$Columns))      
     $MenuListing = @()
-
+    
     For($i=0; $i -lt $Columns; $i++){
             
         $ScratchArray = @()
@@ -73,17 +72,40 @@ Function __tfflick_menu (){
     
     Clear-Host
 
-    While($EnterPressed -eq $False){
-        
+    # $RowsIndex = 5
+    # $RowsStart = 0
+    # $RowsEnd = $RowQty-1
+
+    While($EnterPressed -eq $False){ 
+
         Write-Host "$MenuTitle"
         
         If ($ShowCurrentSelection -eq $True){
            $Host.UI.RawUI.WindowTitle = "CURRENT SELECTION: $($MenuOptions[$Selection])"
         }
-        
-        Write-Host -ForegroundColor Red "$Selection"
+
+        $MenuListing = $MenuListing[1..5]
+        $RowQty = 5
+        # $i = 2     
+               
+        # If ($Selection -lt $RowQty-1) {
+        #    $i = 0
+        #    $RowQty = 5           
+        # }
+        # ElseIf ($Selection -ge $RowQty-1) {
+        #     # $RowsStart = $Selection-($RowQty-1)
+        #     # $RowsEnd   = $Selection
+
+        #     $i = $Selection-($RowQty-1)
+        #     $RowQty = $Selection+1
+        # }
+
+       # $MenuListing = $MenuListing[$RowsStart..$RowsEnd]
+
+        Write-Host "This is ii $i"
         Write-Host "This is RowQty $RowQty"
-        Write-Host "This is Columns $Columns"
+               
+        Write-Host -ForegroundColor Red "$Selection"
 
         For ($i=0; $i -lt $RowQty; $i++){
 
@@ -106,36 +128,10 @@ Function __tfflick_menu (){
                 
             }
 
-        }
-        Write-Host -ForegroundColor Green "$Selection"
-
-        # Write-Host -ForegroundColor Red "$Selection"
-
-        # For ($i=0; $i -lt $RowQty; $i++){
-
-        #     For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
-
-        #         If($j -eq (($Columns-1)*$RowQty)){
-        #             If(($i+$j) -eq $Selection){
-        #                 Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
-        #             } Else {
-        #                 Write-Host "$($MenuListing[$i+$j])"
-        #             }
-        #         } Else {
-
-        #             If(($i+$j) -eq $Selection){
-        #                 Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
-        #             } Else {
-        #                 Write-Host "$($MenuListing[$i+$j])" -NoNewline
-        #             }
-        #         }
-                
-        #     }
-
-        # }
+        }       
 
         #Uncomment the below line if you need to do live debugging of the current index selection. It will put it in green below the selection listing.
-        # Write-Host -ForegroundColor Green "$Selection"
+        Write-Host -ForegroundColor Green "$Selection"
 
         $KeyInput = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown").virtualkeycode
 

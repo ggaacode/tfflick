@@ -11,6 +11,7 @@ $ProgressPreference = 'SilentlyContinue'
 
         
         $Options = $shortversionslist
+        $Options[0..4]
 
         $Options | ForEach-Object -Process {Write-Host $_}
 
