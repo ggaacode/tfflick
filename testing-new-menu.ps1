@@ -13,7 +13,7 @@ $ProgressPreference = 'SilentlyContinue'
         $Options = $shortversionslist
         $Options[0..4]
 
-        $Options | ForEach-Object -Process {Write-Host $_}
+        $Options[0..4] | ForEach-Object -Process {Write-Host $_}
 
         While($EnterPressed -eq $False){
         
