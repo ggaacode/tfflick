@@ -11,127 +11,92 @@ $ProgressPreference = 'SilentlyContinue'
 
         
         $Options = $shortversionslist
-        $Options[0..4]
+        #$Options[0..4]
 
-        $Options[0..4] | ForEach-Object -Process {Write-Host $_}
+        #$Options[0..4] | ForEach-Object -Process {Write-Host $_}
 
-        While($EnterPressed -eq $False){
+        $RowsIndex = 5
+        $Start = 0
+        $End = $RowsIndex
+        $Rows = $Options.count
+
+        $Selection = 0
+
         
-            Write-Host "$MenuTitle"
-            
-            If ($ShowCurrentSelection -eq $True){
-               $Host.UI.RawUI.WindowTitle = "CURRENT SELECTION: $($MenuOptions[$Selection])"
+
+        #$Options[0..4]
+    $EnterPressed = $False
+        Clear-Host
+    
+    While($EnterPressed -eq $False){         
+
+        Write-Host -ForegroundColor Red "$Selection"
+        Write-Host -ForegroundColor Red "This is Start $Start"
+        Write-Host -ForegroundColor Red "This is End $End"
+
+        for ($i=$Start; $i -lt $End; $i++) {
+            if ($i -eq $Selection) {
+                Write-Host -BackgroundColor White -ForegroundColor Black $Options[$i]
             }
-            
-            Write-Host -ForegroundColor Red "$Selection"
-            Write-Host "This is RowQty $RowQty"
-            Write-Host "This is Columns $Columns"
-    
-            For ($i=0; $i -lt $RowQty; $i++){
-    
-                For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
-    
-                    If($j -eq (($Columns-1)*$RowQty)){
-                        If(($i+$j) -eq $Selection){
-                            Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
-                        } Else {
-                            Write-Host "$($MenuListing[$i+$j])"
-                        }
-                    } Else {
-    
-                        If(($i+$j) -eq $Selection){
-                            Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
-                        } Else {
-                            Write-Host "$($MenuListing[$i+$j])" -NoNewline
-                        }
-                    }
-                    
-                }
-    
+            else
+            {
+                Write-Host $Options[$i]
             }
-            Write-Host -ForegroundColor Green "$Selection"
-    
-            # Write-Host -ForegroundColor Red "$Selection"
-    
-            # For ($i=0; $i -lt $RowQty; $i++){
-    
-            #     For($j=0; $j -le (($Columns-1)*$RowQty);$j+=$RowQty){
-    
-            #         If($j -eq (($Columns-1)*$RowQty)){
-            #             If(($i+$j) -eq $Selection){
-            #                 Write-Host -BackgroundColor cyan -ForegroundColor Black "$($MenuListing[$i+$j])"
-            #             } Else {
-            #                 Write-Host "$($MenuListing[$i+$j])"
-            #             }
-            #         } Else {
-    
-            #             If(($i+$j) -eq $Selection){
-            #                 Write-Host -BackgroundColor Cyan -ForegroundColor Black "$($MenuListing[$i+$j])" -NoNewline
-            #             } Else {
-            #                 Write-Host "$($MenuListing[$i+$j])" -NoNewline
-            #             }
-            #         }
-                    
-            #     }
-    
-            # }
-    
-            #Uncomment the below line if you need to do live debugging of the current index selection. It will put it in green below the selection listing.
-            # Write-Host -ForegroundColor Green "$Selection"
-    
-            $KeyInput = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown").virtualkeycode
-    
-            Switch($KeyInput){
-                13{
-                    $EnterPressed = $True
-                    Return $Selection
-                    Clear-Host
-                    break
+        }
+        Write-Host -ForegroundColor Green "$Selection"
+        Write-Host -ForegroundColor Green "This is Start $Start"
+        Write-Host -ForegroundColor Green "This is End $End"
+        
+         $KeyInput = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown").virtualkeycode
+
+        Switch($KeyInput){
+            13{
+                $EnterPressed = $True
+                Return $Selection          
+                Clear-Host
+                break
+            }           
+
+            38{ #Up
+                if ($Selection -gt 0){                   
+                    $Selection -= 1
                 }
-    
-                37{ #Left
-                    If ($Selection -ge $RowQty){
-                        $Selection -= $RowQty
-                    } Else {
-                        $Selection += ($Columns-1)*$RowQty
-                    }
-                    Clear-Host
-                    break
+
+                if ($Selection -lt $End-1 -and $End -le $RowsIndex) {
+                    $Start = 0         
                 }
-    
-                38{ #Up
-                    If ((($Selection+$RowQty)%$RowQty) -eq 0){
-                        $Selection += $RowQty - 1
-                    } Else {
-                        $Selection -= 1
-                    }
-                    Clear-Host
-                    break
+                ilseIf ($Selection -ge $End-1 -and $End -gt $RowsIndex) {
+                     $Start += 1
+                     $End += 1
+                }              
+
+                Clear-Host
+                break
+            }
+
+            40{ #Down
+                if ($Selection -lt $Rows){                    
+                    $Selection += 1
                 }
-    
-                39{ #Right
-                    If ([Math]::Ceiling($Selection/$RowQty) -eq $Columns -or ($Selection/$RowQty)+1 -eq $Columns){
-                        $Selection -= ($Columns-1)*$RowQty
-                    } Else {
-                        $Selection += $RowQty
-                    }
-                    Clear-Host
-                    break
+
+                if ($Selection -lt $End-1 -and $End-1 -eq $RowsIndex-1) {
+                    $Start = 0 
+                    $End = $RowsIndex        
                 }
-    
-                40{ #Down
-                    If ((($Selection+1)%$RowQty) -eq 0 -or $Selection -eq $MaxValue){
-                        $Selection = ([Math]::Floor(($Selection)/$RowQty))*$RowQty
-                        
-                    } Else {
-                        $Selection += 1
-                    }
-                    Clear-Host
-                    break
+                elseIf ($Selection -ge $End-1 -and $End-1 -ge $RowsIndex-1 -and $End -le ($Rows-1)-($RowsIndex-1)) {
+                     $Start += 1
+                     $End = $Start+$RowsIndex
                 }
-                Default{
-                    Clear-Host
-                }
+                elseif ($Selection -ge ($Rows-1)-($RowsIndex-1) -and $Start -eq ($Rows-1)-($RowsIndex-1)) {
+                    $Start = ($Rows-1)-($RowsIndex-1)
+                    $End = $Rows-1
+                }              
+
+                Clear-Host
+                break
+            }
+            Default{
+                Clear-Host
             }
         }
     }
