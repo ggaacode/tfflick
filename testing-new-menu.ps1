@@ -17,8 +17,11 @@ $ProgressPreference = 'SilentlyContinue'
 
         $RowsIndex = 5
         $Start = 0
-        $End = $RowsIndex
+        $End = $RowsIndex-1
         $Rows = $Options.count
+        $IndexGuide = 2
+        $IndexTail = $RowsIndex-$IndexGuide
+       # $Options[186]
 
         $Selection = 0
 
@@ -33,8 +36,9 @@ $ProgressPreference = 'SilentlyContinue'
         Write-Host -ForegroundColor Red "$Selection"
         Write-Host -ForegroundColor Red "This is Start $Start"
         Write-Host -ForegroundColor Red "This is End $End"
+        Write-Host -ForegroundColor Red "This is Rows $Rows"
 
-        for ($i=$Start; $i -lt $End; $i++) {
+        for ($i=$Start; $i -le $End; $i++) {
             if ($i -eq $Selection) {
                 Write-Host -BackgroundColor White -ForegroundColor Black $Options[$i]
             }
@@ -46,6 +50,7 @@ $ProgressPreference = 'SilentlyContinue'
         Write-Host -ForegroundColor Green "$Selection"
         Write-Host -ForegroundColor Green "This is Start $Start"
         Write-Host -ForegroundColor Green "This is End $End"
+        Write-Host -ForegroundColor Red "This is Rows $Rows"
         
          $KeyInput = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown").virtualkeycode
 
@@ -58,45 +63,37 @@ $ProgressPreference = 'SilentlyContinue'
             }           
 
             38{ #Up
-                if ($Selection -gt 0){                   
+                if ($Selection -ge $RowsIndex-1 -and $Selection -lt ($Rows-1)) {
                     $Selection -= 1
-                }
-
-                if ($Selection -lt $End-1 -and $End -le $RowsIndex) {
-                    $Start = 0         
-                }
-                ilseIf ($Selection -ge $End-1 -and $End -gt $RowsIndex) {
-                     $Start += 1
-                     $End += 1
-                }              
-
+                    $Start -= 1
+                    $End -= 1
+                }           
+                elseif ($Selection -gt 0 -and $Selection -lt $RowsIndex-1) {
+                    $Selection -= 1
+                    $Start -= 1
+                    $End -= 1
+                }           
                 Clear-Host
                 break
             }
 
             40{ #Down
-                if ($Selection -lt $Rows){                    
+                if ($Selection -ge 0 -and $Selection -lt $RowsIndex-1) {
                     $Selection += 1
+                    $Start = 0
+                    $End = $RowsIndex-1
                 }
-
-                if ($Selection -lt $End-1 -and $End-1 -eq $RowsIndex-1) {
-                    $Start = 0 
-                    $End = $RowsIndex        
-                }
-                elseIf ($Selection -ge $End-1 -and $End-1 -ge $RowsIndex-1 -and $End -le ($Rows-1)-($RowsIndex-1)) {
-                     $Start += 1
-                     $End = $Start+$RowsIndex
-                }
-                elseif ($Selection -ge ($Rows-1)-($RowsIndex-1) -and $Start -eq ($Rows-1)-($RowsIndex-1)) {
-                    $Start = ($Rows-1)-($RowsIndex-1)
-                    $End = $Rows-1
-                }              
-
+                elseif ($Selection -ge $RowsIndex-1 -and $Selection -lt ($Rows-1)) {
+                    $Selection += 1
+                    $Start += 1
+                    $End += 1
+                }               
                 Clear-Host
                 break
-            }
+            }            
+        
             Default{
                 Clear-Host
             }
-        }
     }
+}    
