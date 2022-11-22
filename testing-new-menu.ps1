@@ -78,16 +78,34 @@ $ProgressPreference = 'SilentlyContinue'
             }
 
             40{ #Down
-                if ($Selection -ge 0 -and $Selection -lt $RowsIndex-1) {
+                # if ($Selection -ge 0 -and $Selection -lt $RowsIndex-1) {
+                #     $Selection += 1
+                #     $Start = 0
+                #     $End = $RowsIndex-1
+                # }
+                # elseif ($Selection -ge 0 -and $Selection -lt ($Rows-1)) {
+                #     $Selection += 1
+                #     $Start += 1
+                #     $End += 1
+                # }         
+                if ($Selection -ge 0 -and $Selection -lt ($Rows-1)) {
+                   if ($Selection -eq $Start) {
                     $Selection += 1
-                    $Start = 0
-                    $End = $RowsIndex-1
-                }
-                elseif ($Selection -ge $RowsIndex-1 -and $Selection -lt ($Rows-1)) {
+                    $Start = $Start
+                    $End = $End
+                   }
+                   elseif($Selection -gt $Start -and $Selection -le $End) {
+                    $Selection += 1
+                    $Start = $Start
+                    $End = $End
+                   }
+                   elseif ($Selection -gt $End) {                   
                     $Selection += 1
                     $Start += 1
                     $End += 1
-                }               
+                   }
+                }
+                       
                 Clear-Host
                 break
             }            
