@@ -56,10 +56,4 @@ Run `.\install_tfflick.ps1`
 * Make available for Windows 32 bit architecture - availability to download the 32 bit version of the Terraform executable
 * Provide Un-installer option
 * Improve menu option - The no argument option of `tfflick`
-* Tidy up
-
-## Credits
- 
- * Create-Menu function developed by JDDellGuy at https://community.spiceworks.com/people/josiahdeal3479
-   https://community.spiceworks.com/scripts/show/4785-create-menu-2-0-arrow-key-driven-powershell-menu-for-scripts
-   Renamed the function to __tfflick_menu   
+* Tidy up
