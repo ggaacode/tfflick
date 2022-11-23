@@ -23,6 +23,7 @@ $Rows = $MenuOptions.count
 $Selection = 0
 $DownArrow = "↓"
 $UpArrow = "↑"
+$SelectionArrow = "→"
 $EnterPressed = $False
 
 Clear-Host
@@ -38,15 +39,15 @@ While($EnterPressed -eq $False){
     for ($i=$Start; $i -le $End; $i++) {
         if ($i -eq $Selection) {
             if ($i -eq $End -and $End -ne $Rows-1) {
-                Write-Host -NoNewline -BackgroundColor White -ForegroundColor Black "  "$MenuOptions[$i]
+                Write-Host -NoNewline -BackgroundColor White -ForegroundColor Black " $SelectionArrow"$MenuOptions[$i]
                 Write-Host " "$DownArrow 
             }
             elseif ($i -eq $Start -and $Start -ne 0) {
-                Write-Host -NoNewline -BackgroundColor White -ForegroundColor Black "  "$MenuOptions[$i]
+                Write-Host -NoNewline -BackgroundColor White -ForegroundColor Black " $SelectionArrow"$MenuOptions[$i]
                 Write-Host " "$UpArrow
             }
             else {
-                Write-Host -BackgroundColor White -ForegroundColor Black "  "$MenuOptions[$i]
+                Write-Host -BackgroundColor White -ForegroundColor Black " $SelectionArrow"$MenuOptions[$i]
             }
         }
         else
@@ -157,7 +158,8 @@ $baseurl = "https://releases.hashicorp.com/terraform/"
         elseif ( -not(Test-Path -Path $tfversions"\"$versionfile))
         {
         # Download file if not already in the system
-           $ProgressPreference = 'SilentlyContinue'       
+           $ProgressPreference = 'SilentlyContinue' 
+           [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12      
            Invoke-WebRequest $url -OutFile $tfflickpath"\"$zipfile
            Write-Host "Downloading version $tfw_argument"
            Expand-Archive $tfflickpath"\"$zipfile -DestinationPath $tfversions -Force
@@ -172,6 +174,7 @@ $baseurl = "https://releases.hashicorp.com/terraform/"
         
         # Retrieve list of available Terraform versions
         $ProgressPreference = 'SilentlyContinue'
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         $versionslist = Invoke-WebRequest -URI $baseurl
         $list = $versionslist.Links | Where-Object {
             $_.outerText -match "^terraform_[0-9]+.[0-9]+.[0-9]+$" -and $_.outerText -notlike "*_0.1.*"

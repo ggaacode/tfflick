@@ -101,7 +101,8 @@ try {
         $terraformversion = terraform --version
         $terraformversion  
     }
-    else {    
+    else { 
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12   
         $versionslist = Invoke-WebRequest -URI https://releases.hashicorp.com/terraform/
         $list = $versionslist.Links | Where-Object {
             $_.outerText -match "^terraform_[0-9]+.[0-9]+.[0-9]+$" -and $_.outerText -notlike "*_0.1.*"
