@@ -4,10 +4,6 @@
         [Parameter(Mandatory=$false, HelpMessage="Help menu argument")][switch] $h
     )
 
-# Credits
-# Create-Menu function developed by JDDellGuy at https://community.spiceworks.com/people/josiahdeal3479
-# https://community.spiceworks.com/scripts/show/4785-create-menu-2-0-arrow-key-driven-powershell-menu-for-scripts
-# Renamed the function to __tfflick_menu
 try {
     # Set -h argument to present help options menu
     if ($h) {$argument = "help"}  
@@ -25,8 +21,8 @@ $Start = 0
 $End = $RowsToDisplay-1
 $Rows = $MenuOptions.count
 $Selection = 0
-$DownArrow = [char]25
-$UpArrow = [char]24
+$DownArrow = "↓"
+$UpArrow = "↑"
 $EnterPressed = $False
 
 Clear-Host
