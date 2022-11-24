@@ -37,7 +37,7 @@ try {
     else {
         Write-Host "User modules destination not found please check installation log at "$installationlog
         break
-    }      
+    }
 
     # Check tfflick has been copied correctly
     if (Test-Path -Path $destination"\tfflick") {
