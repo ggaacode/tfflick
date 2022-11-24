@@ -92,7 +92,7 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 
 ## 1.0.0
 
-* Initial release of `tfflick` module
+* Initial release of **tfflick** module
 
 ## To-Do
 
