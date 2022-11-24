@@ -1,4 +1,9 @@
 try {
+
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    $IsAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)   
+
+    $UnblockFile = $args[0]
     
     $homedir         = $env:USERPROFILE
     $tfflickpath     = $homedir+"\.tfflick"
@@ -6,6 +11,11 @@ try {
     $installationlog = $tfflickpath+"\tfflick_install_log.txt"
     
     Start-Transcript -Path $tfflickpath"\tfflick_install_log.txt" -Append
+
+    if (-not($IsAdmin)) {
+        Write-Host -ForegroundColor Yellow "Make sure you run the installer as Administrator"
+        break
+    }
     
     # # Find destination directory - typically in the format C:\<home directory>\Documents\WindowsPowerShell\Modules
     $destination = $env:PSModulePath -split ";" | Where-Object {
@@ -27,11 +37,16 @@ try {
     else {
         Write-Host "User modules destination not found please check installation log at "$installationlog
         break
-    }       
+    }
 
     # Check tfflick has been copied correctly
-    if (Test-Path -Path $destination".\tfflick") {
+    if (Test-Path -Path $destination"\tfflick") {
         Write-Host "Module copied successfuly to Powershell Module path"
+        
+        if ($UnblockFile -eq "unblock-tfflick") {
+            Write-Host "Unlocking tfflick.psm1 module script."
+            Unblock-File -Path $destination"\tfflick\tfflick.psm1"
+        }
     }
     else {
         Write-Host "Module was not found at destination check installation log at "$installationlog
@@ -99,7 +114,8 @@ try {
         $terraformversion = terraform --version
         $terraformversion  
     }
-    else {    
+    else { 
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12   
         $versionslist = Invoke-WebRequest -URI https://releases.hashicorp.com/terraform/
         $list = $versionslist.Links | Where-Object {
             $_.outerText -match "^terraform_[0-9]+.[0-9]+.[0-9]+$" -and $_.outerText -notlike "*_0.1.*"
