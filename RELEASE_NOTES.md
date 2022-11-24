@@ -1,3 +1,3 @@
 ## 1.0.0
 
-* Initial release of `tfflick` module
+* Initial release of **tfflick** module
