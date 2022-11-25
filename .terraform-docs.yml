@@ -18,6 +18,8 @@ content: |-
 
   {{ include "RELEASE_NOTES.md" }}  
 
+  {{ include "KNOWN_ISSUES.md"}}
+
   {{ include "TODO.md" }}
   
 output:
