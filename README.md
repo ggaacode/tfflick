@@ -11,7 +11,8 @@ Terraform executables are downloaded from https://releases.hashicorp.com/terrafo
 
 ## Download
 
-* Powershell `Invoke-WebRequest "https://github.com/ggaacode/tfflick/blob/main/tfflick_v1.0.0.Zip?raw=true" -OutFile tfflick_v1.0.0.zip`
+* In Powershell run this command replacing the path to your downloads directory
+  `Invoke-WebRequest -URI https://github.com/ggaacode/tfflick/archive/refs/tags/0.1.0.zip -OutFile <Downloads Directory>tfflick.zip`
 
 ## Installation
 
@@ -86,11 +87,17 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 * Returns a menu list of available Terraform versions
 * Use your arrow keys to select the desired version and press enter
 
+![alt text](tfflick_no_args.jpg)
+
  `tfflick {version number}`
 * Pass desired version as the argument. For example `tfflick 1.3.4`
 
+![alt text](tfflick_pass_version.jpg)
+
  `tfflick -h` or `tfflick help`
 * Displays `tfflick` usage options
+
+![alt text](tfflick_help_menu.jpg)
 
 ## Release Notes
 
