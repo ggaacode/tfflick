@@ -3,6 +3,9 @@
 ## Description
 
 **tfflick** is a Powershell module that lets you flick between different versions of Terraform. **tfflick** downloads the specific version you require.
+
+**tfflick** is a Powershell alternative for tfswitch Terraform version manager.
+
 Installation is quick and and you can start using Terraform straight away.
 
 Terraform executables are downloaded from https://releases.hashicorp.com/terraform/ using **Tls12** protocol
