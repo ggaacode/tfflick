@@ -5,7 +5,7 @@
 **tfflick** is a Powershell module that lets you flick between different versions of Terraform. **tfflick** downloads the specific version you require.
 Installation is quick and and you can start using Terraform straight away.
 
-Terraform executables are downloaded from https://releases.hashicorp.com/terraform/
+Terraform executables are downloaded from https://releases.hashicorp.com/terraform/ using **Tls12** protocol
 
 **tfflick** Currently has been tested on Powershell version 5.1 and currently only downloads the Windows AMD64 versions of the Terraform executable
 
@@ -49,7 +49,11 @@ MachinePolicy       Undefined
 
 ## Run the Installer
 
-Open Poweshell as Administrator and navigate to this folder's location.
+Open Poweshell as Administrator and navigate to the **tfflick** downloaded directory location.
+
+To run the installer when the execution policy is set to **LocalMachine RemoteSigned**, you need to temporarily set it to **Process Bypass** to be able to install **tfflick**. This is only valid for the current session of Powershell.
+
+Run `Set-ExecutionPolicy Bypass -Scope Process`
 
 Run `.\install_tfflick.ps1` if you don't want the module to be unblocked by the installer
 
