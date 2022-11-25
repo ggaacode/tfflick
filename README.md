@@ -105,6 +105,13 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 
 * Initial release of **tfflick** module
 
+## Known Issues
+
+* The **Terraform** executable path can clash with pre-existing paths. 
+  For example, if **Chocolatey** has previously used to install **Terraform** you might only see this version when running the **Terraform** executable.
+
+  A workaround is to go to **Chocolatey's** bin directory and delete the **terraform** executable. Typically located at `C:\ProgramData\chocolatey\bin`
+
 ## To-Do
 
 * Currently working on improving the menu option - The no argument option of `tfflick`. It displays ok when the Powershell window is fully expanded. If the window is not in full mode, the top part of the list is not visible, in this case is better to use the option `tfflick {version number}` 
