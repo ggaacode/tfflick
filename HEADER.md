@@ -85,9 +85,10 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 
   ![alt text](tfflick_module_directory.jpg)
 
-* Create an entry in the User `PATH`
-
 * Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
+
+* Create an entry in the User `PATH` to the `tfflick` work directory created in the previous step.
+
 
 ### Removal
 
