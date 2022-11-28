@@ -17,6 +17,8 @@ Terraform executables are downloaded from https://releases.hashicorp.com/terrafo
 * In Powershell run this command replacing the path to your downloads directory 
   `Invoke-WebRequest -URI https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.0.zip -OutFile <Downloads Directory>tfflick.zip`
 
+* Direct download link https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.0.zip 
+
 ## Installation
 
 ### Using the installer
@@ -46,7 +48,7 @@ MachinePolicy       Undefined
 
   The installation script can unblock the **tfflick.psm1** module script by running passing the `unblock-tfflick` argument as administrator. See below for details.
  
-  If you don't unblock the module, Powershell will prompt you and ask if you wan the file to be unblocked and give you the exact command to run the first time you run **tfflick**. 
+  If you don't unblock the module, Powershell will prompt you and ask if you want the file to be unblocked and give you the exact command to run the first time you run **tfflick**. 
  
   For example `Unblock-File -Path 'C:\**home directory**\Documents\WindowsPowerShell\Modules\tfflick\tfflick.psm1'` to run as Administrator.
 
@@ -78,6 +80,10 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 ### Manual installation
 
 * Copy the module to the C:\\**home directory**\Documents\WindowsPowerShell\Modules directory
+  Run `$env:PSModulePath -split ";"` to view all available Powershell module paths. 
+  Copy the **tfflick** directory and contents to the the Powershell module directory found above.
+
+  ![alt text](tfflick_module_directory.jpg)
 
 * Create an entry in the User `PATH`
 
