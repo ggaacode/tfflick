@@ -15,3 +15,35 @@
 * Displays `tfflick` usage options
 
 ![alt text](tfflick_help_menu.jpg)
+
+## Git Bash
+
+You can use a limited version of `tfflick` in **Git Bash**. It allows to download and change **Terraform** versions by calling `tfflick {version number}` or `tfflick -h` or `tfflick help`. 
+The scrolling menu is not available in **Git Bash**
+
+**Procedure**
+
+In **Git Bash**, append this code to your `~/.bash_profile` file. If the file doesn't exist, you can create it.
+
+`vim ~/.bash_profile`
+
+Paste/append this this code in .bashrc
+
+```
+function tfflick(){
+        if [ -z "$1" ]
+        then
+                echo "Please pass the desired Terraform version number as an argument"
+                echo "Example: tfflick 1.3.5"
+				echo "Alternatively use tfflick in a Powershell window"
+        else
+                powershell -command tfflick "$1"
+				echo "tfflick has limited functionality in Git Bash."
+				echo "To use the full version of tfflick try it in a Powershell window"
+        fi
+}
+```
+
+Then run: 
+
+`source .bash_profile`

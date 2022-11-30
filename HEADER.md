@@ -14,7 +14,7 @@ Terraform executables are downloaded from https://releases.hashicorp.com/terrafo
 
 ## Download
 
-* In Powershell run this command replacing the path to your downloads directory 
+* In Powershell run this command replacing the path to your downloads directory and extract the contents of the zip file.
   `Invoke-WebRequest -URI https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.0.zip -OutFile <Downloads Directory>tfflick.zip`
 
 * Direct download link https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.0.zip 
@@ -46,7 +46,7 @@ MachinePolicy       Undefined
 
 * Unblocking **tfflick** 
 
-  The installation script can unblock the **tfflick.psm1** module script by running passing the `unblock-tfflick` argument as administrator. See below for details.
+  The installation script can unblock the **tfflick.psm1** module script by passing the `unblock-tfflick` argument as administrator. See below for details.
  
   If you don't unblock the module, Powershell will prompt you and ask if you want the file to be unblocked and give you the exact command to run the first time you run **tfflick**. 
  
@@ -56,7 +56,7 @@ MachinePolicy       Undefined
 
 ## Run the Installer
 
-Open Poweshell as Administrator and navigate to the **tfflick** downloaded directory location.
+Open Poweshell as Administrator and navigate to the extracted **tfflick** downloaded directory.
 
 To run the installer when the execution policy is set to **LocalMachine RemoteSigned**, you need to temporarily set it to **Process Bypass** to be able to install **tfflick**. This is only valid for the current session of Powershell.
 
