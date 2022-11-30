@@ -110,7 +110,8 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 
 ## Git Bash
 
-You can use a limited version of `tfflick` in **Git Bash**. It allows to download and change **Terraform** versions by calling `tfflick {version number}` or `tfflick -h` or `tfflick help`. 
+You can use a limited version of `tfflick` in **Git Bash**. It allows you to download and change **Terraform** versions by calling `tfflick {version number}`
+You can also use `tfflick -h` or `tfflick help`. 
 The scrolling menu is not available in **Git Bash**
 
 **Procedure**
