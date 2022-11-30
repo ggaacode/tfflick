@@ -120,7 +120,7 @@ In **Git Bash**, append this code to your `~/.bash_profile` file. If the file do
 
 `vim ~/.bash_profile`
 
-Paste/append this code in .bashrc
+Paste/append this code in .bash_profile
 
 ```
 function tfflick(){
