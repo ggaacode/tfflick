@@ -110,8 +110,7 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 
 ## Git Bash
 
-You can use a limited version of `tfflick` in **Git Bash**. It allows you to download and change **Terraform** versions by calling `tfflick {version number}`
-You can also use `tfflick -h` or `tfflick help`. 
+You can use a limited version of `tfflick` in **Git Bash**. It allows to download and change **Terraform** versions by calling `tfflick {version number}` or `tfflick -h` or `tfflick help`. 
 The scrolling menu is not available in **Git Bash**
 
 **Procedure**
@@ -120,7 +119,7 @@ In **Git Bash**, append this code to your `~/.bash_profile` file. If the file do
 
 `vim ~/.bash_profile`
 
-Paste/append this code in .bash_profile
+Paste/append this code in .bashrc
 
 ```
 function tfflick(){
@@ -128,11 +127,11 @@ function tfflick(){
         then
                 echo "Please pass the desired Terraform version number as an argument"
                 echo "Example: tfflick 1.3.5"
-		echo "Alternatively use tfflick in a Powershell window"
+                echo "Alternatively use tfflick in a Powershell window"
         else
                 powershell -command tfflick "$1"
-		echo "tfflick has limited functionality in Git Bash."
-		echo "To use the full version of tfflick try it in a Powershell window"
+                echo "tfflick has limited functionality in Git Bash."
+                echo "To use the full version of tfflick try it in a Powershell window"
         fi
 }
 ```
@@ -142,6 +141,11 @@ Then run:
 `source .bash_profile`
 
 ## Release Notes
+
+## v0.1.1
+
+* Added instruction for Git Bash usage
+* Updated README description
 
 ## v0.1.0
 
@@ -161,4 +165,4 @@ Then run:
 * Provide Un-installer option
 * Add features like recent Terraform versions used and download multiple versions
 *owershell is supported across platforms, make **tfflick** platform aware so it can be used more widely.
-* Tidy up
+* Tidy up
