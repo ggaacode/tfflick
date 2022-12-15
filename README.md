@@ -15,9 +15,9 @@ Terraform executables are downloaded from https://releases.hashicorp.com/terrafo
 ## Download
 
 * In Powershell run this command replacing the path to your downloads directory and extract the contents of the zip file.
-  `Invoke-WebRequest -URI https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.1.zip -OutFile <Downloads Directory>tfflick.zip`
+  `Invoke-WebRequest -URI https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.2.zip -OutFile <Downloads Directory>tfflick.zip`
 
-* Direct download link https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.1.zip
+* Direct download link https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.2.zip
 
 ## Installation
 
@@ -110,8 +110,7 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 
 ## Git Bash
 
-You can use a limited version of `tfflick` in **Git Bash**. It allows you to download and change **Terraform** versions by calling `tfflick {version number}`
-You can also use `tfflick -h` or `tfflick help`. 
+You can use a limited version of `tfflick` in **Git Bash**. It allows to download and change **Terraform** versions by calling `tfflick {version number}` or `tfflick -h` or `tfflick help`. 
 The scrolling menu is not available in **Git Bash**
 
 **Procedure**
@@ -120,7 +119,7 @@ In **Git Bash**, append this code to your `~/.bash_profile` file. If the file do
 
 `vim ~/.bash_profile`
 
-Paste/append this code in .bash_profile
+Paste/append this code in .bashrc
 
 ```
 function tfflick(){
@@ -128,11 +127,11 @@ function tfflick(){
         then
                 echo "Please pass the desired Terraform version number as an argument"
                 echo "Example: tfflick 1.3.5"
-		echo "Alternatively use tfflick in a Powershell window"
+				echo "Alternatively use tfflick in a Powershell window"
         else
                 powershell -command tfflick "$1"
-		echo "tfflick has limited functionality in Git Bash."
-		echo "To use the full version of tfflick try it in a Powershell window"
+				echo "tfflick has limited functionality in Git Bash."
+				echo "To use the full version of tfflick try it in a Powershell window"
         fi
 }
 ```
@@ -142,6 +141,15 @@ Then run:
 `source .bash_profile`
 
 ## Release Notes
+
+## v0.1.2
+
+* Added information about a new known issue and workaround related to Internet Explorer setup during installation and first Terraform executable download
+
+## v0.1.1
+
+* Added instruction for Git Bash usage
+* Updated README description
 
 ## v0.1.0
 
@@ -154,6 +162,13 @@ Then run:
 
   A workaround is to go to **Chocolatey's** bin directory and delete the **terraform** executable. Typically located at `C:\ProgramData\chocolatey\bin`
 
+* You might see this error in the installation log if you've never used Internet Explorer. Most likely Internet Explorer will bring a pop up window asking to complete the set up. The work around is to follo the instructions in the pop up window and retry the installation.
+
+Error:
+```
+TerminatingError(Invoke-WebRequest): "The response content cannot be parsed because the Internet Explorer engine is not available, or Internet Explorer's first-launch configuration is not complete. Specify the UseBasicParsing parameter and try again. "
+```
+
 ## To-Do
 
 * Currently working on improving the menu option - The no argument option of **tfflick**.  
@@ -161,4 +176,4 @@ Then run:
 * Provide Un-installer option
 * Add features like recent Terraform versions used and download multiple versions
 *owershell is supported across platforms, make **tfflick** platform aware so it can be used more widely.
-* Tidy up
+* Tidy up
