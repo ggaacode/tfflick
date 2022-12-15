@@ -127,11 +127,11 @@ function tfflick(){
         then
                 echo "Please pass the desired Terraform version number as an argument"
                 echo "Example: tfflick 1.3.5"
-				echo "Alternatively use tfflick in a Powershell window"
+                echo "Alternatively use tfflick in a Powershell window"
         else
                 powershell -command tfflick "$1"
-				echo "tfflick has limited functionality in Git Bash."
-				echo "To use the full version of tfflick try it in a Powershell window"
+                echo "tfflick has limited functionality in Git Bash."
+                echo "To use the full version of tfflick try it in a Powershell window"
         fi
 }
 ```
@@ -164,7 +164,7 @@ Then run:
 
 * You might see this error in the installation log if you've never used Internet Explorer. Most likely Internet Explorer will bring a pop up window asking to complete the set up. The work around is to follo the instructions in the pop up window and retry the installation.
 
-Error:
+  Error:
 ```
 TerminatingError(Invoke-WebRequest): "The response content cannot be parsed because the Internet Explorer engine is not available, or Internet Explorer's first-launch configuration is not complete. Specify the UseBasicParsing parameter and try again. "
 ```
@@ -176,4 +176,4 @@ TerminatingError(Invoke-WebRequest): "The response content cannot be parsed beca
 * Provide Un-installer option
 * Add features like recent Terraform versions used and download multiple versions
 *owershell is supported across platforms, make **tfflick** platform aware so it can be used more widely.
-* Tidy up
+* Tidy up
