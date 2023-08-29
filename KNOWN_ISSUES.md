@@ -3,9 +3,10 @@
 * The **Terraform** executable path can clash with pre-existing paths. 
   For example, if **Chocolatey** has previously used to install **Terraform** you might only see this version when running the **Terraform** executable.
 
-  A workaround is to go to **Chocolatey's** bin directory and delete the **terraform** executable. Typically located at `C:\ProgramData\chocolatey\bin`
+  You can uninstall **Terraform** using **Chocolatey** with this command: `choco uninstall terraform`
+  Alternatively another workaround is to go to **Chocolatey's** bin directory and delete the **terraform** executable. Typically located at `C:\ProgramData\chocolatey\bin`
 
-* You might see this error in the installation log if you've never used Internet Explorer. Most likely Internet Explorer will bring a pop up window asking to complete the set up. The work around is to follo the instructions in the pop up window and retry the installation.
+* You might see this error in the installation log if you've never used Internet Explorer. Most likely Internet Explorer will bring a pop up window asking to complete the set up. The work around is to follow the instructions in the pop up window and retry the installation.
 
 Error:
 ```
