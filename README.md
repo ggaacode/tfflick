@@ -15,9 +15,9 @@ Terraform executables are downloaded from https://releases.hashicorp.com/terrafo
 ## Download
 
 * In Powershell run this command replacing the path to your downloads directory and extract the contents of the zip file.
-  `Invoke-WebRequest -URI https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.2.zip -OutFile <Downloads Directory>tfflick.zip`
+  `Invoke-WebRequest -URI https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.3.zip -OutFile <Downloads Directory>tfflick.zip`
 
-* Direct download link https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.2.zip
+* Direct download link https://github.com/ggaacode/tfflick/archive/refs/tags/v0.1.3.zip
 
 ## Installation
 
