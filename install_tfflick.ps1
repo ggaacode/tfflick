@@ -27,12 +27,12 @@ try {
         Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force    
     }
     elseif ($destination.Count -eq  0) {
-        $newPSModuleDirectory = $homedir+"\Documents\WindowsPowerShell\Modules"
+        $destination = $homedir+"\Documents\WindowsPowerShell\Modules"
         Write-Host "**********************"
-        Write-Host "Creating Powershell Module path - "$newPSModuleDirectory
-        New-Item $newPSModuleDirectory -ItemType Directory
+        Write-Host "Creating Powershell Module path - "$destination
+        New-Item $destination -ItemType Directory
         # Copy tfflick module to destination directory after creating WindowsPowerShell\Modules directory
-        Copy-Item -Path ".\tfflick" -Destination $newPSModuleDirectory -Recurse -Force 
+        Copy-Item -Path ".\tfflick" -Destination $destination -Recurse -Force 
     }
     else {
         Write-Host "User modules destination not found please check installation log at "$installationlog
