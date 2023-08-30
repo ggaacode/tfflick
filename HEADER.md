@@ -1,6 +1,6 @@
-# [tfflick](https://github.com/ggaacode/tfflick "tfflick Github repo")
+# tfflick
 
-## [tfflick Github repo](https://github.com/ggaacode/tfflick "tfflick Github repo")
+## <https://github.com/ggaacode/tfflick>
 
 ## Description
 
