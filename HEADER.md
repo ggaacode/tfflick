@@ -1,6 +1,6 @@
 # tfflick
 
-## <https://github.com/ggaacode/tfflick>
+<https://github.com/ggaacode/tfflick>
 
 ## Description
 
