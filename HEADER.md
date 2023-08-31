@@ -4,7 +4,7 @@
 
 ## Description
 
-**tfflick** is a Powershell Terraform switcher module. **tfflick** downloads the specific version you require and switches between them.
+**tfflick** is a Powershell Terraform version manager module. **tfflick** downloads the specific version you require and switches between them.
 
 **tfflick** is a Powershell alternative for tfswitch Terraform version manager.
 
