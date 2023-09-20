@@ -82,7 +82,7 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
   Run `$env:PSModulePath -split ";"` to view all available Powershell module paths.
   Copy the **tfflick** directory and contents to the the Powershell module directory found above.
 
-  ![alt text](tfflick_module_directory.jpg)
+  [![alt text](tfflick_module_directory.jpg "tfflick module directory")](https://ggaacode.github.io/tfflick/tfflick_module_directory.jpg)
 
 * Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
 
@@ -98,17 +98,17 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
 * Returns a menu list of available Terraform versions
 * Use your arrow keys to select the desired version and press enter
 
-![alt text](tfflick_no_args.jpg)
+[![alt text](tfflick_no_args.jpg "tfflick no args")](https://ggaacode.github.io/tfflick/tfflick_no_args.jpg)
 
  `tfflick {version number}`
 * Pass desired version as the argument. For example `tfflick 1.3.4`
 
-![alt text](tfflick_pass_version.jpg)
+[![alt text](tfflick_pass_version.jpg "tfflick pass version")](https://ggaacode.github.io/tfflick/tfflick_pass_version.jpg)
 
  `tfflick -h` or `tfflick help`
 * Displays `tfflick` usage options
 
-![alt text](tfflick_help_menu.jpg)
+[![alt text](tfflick_help_menu.jpg "tfflick help menu")](https://ggaacode.github.io/tfflick/tfflick_help_menu.jpg)
 
 ## Git Bash
 

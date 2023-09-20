@@ -85,7 +85,7 @@ Or `.\install_tfflick.ps1 unblock-tfflick` to unblock the module during installa
   Run `$env:PSModulePath -split ";"` to view all available Powershell module paths. 
   Copy the **tfflick** directory and contents to the the Powershell module directory found above.
 
-  ![alt text](tfflick_module_directory.jpg)
+  [![alt text](tfflick_module_directory.jpg "tfflick module directory")](https://ggaacode.github.io/tfflick/tfflick_module_directory.jpg)
 
 * Create the **tfflick** working directory in C:\\**home directory**\ called `.tfflick`
 
