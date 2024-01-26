@@ -121,7 +121,7 @@ In **Git Bash**, append this code to your `~/.bash_profile` file. If the file do
 
 `vim ~/.bash_profile`
 
-Paste/append this code in .bashrc
+Paste/append this code in .bash_profile
 
 ```
 function tfflick(){
@@ -183,4 +183,4 @@ TerminatingError(Invoke-WebRequest): "The response content cannot be parsed beca
 * Provide Un-installer option
 * Add features like recent Terraform versions used and download multiple versions
 *owershell is supported across platforms, make **tfflick** platform aware so it can be used more widely.
-* Tidy up
+* Tidy up
